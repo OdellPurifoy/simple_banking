@@ -5,6 +5,7 @@ class BankAccount < ApplicationRecord
   validates :account_number, presence: true, uniqueness: true
   validates :balance, presence: true, numericality: true
 
+  has_many :account_transactions
   before_validation :load_defaults
 
   def load_defaults

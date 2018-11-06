@@ -1,0 +1,17 @@
+%h1
+  Account Number: #{@bank_account.first.account_number}
+  %small
+    #{@bank_account.first.client}
+
+%table.table.table-bordered
+  %thead
+    %tr
+      %th Date of Transaction
+      %th Transaction Type
+      %th Amount
+  %tbody
+    - @bank_account.account_transactions.each do |t|
+      %tr
+        %th #{t.created_at}
+        %th #{t.transaction_type}
+        %th #{number_to_currency(t.amount)}
