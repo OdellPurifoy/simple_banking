@@ -3,6 +3,9 @@
   %small
     #{@bank_account.first.client}
 
+= button_tag :new_transaction, id: "btn-new-transaction", class: "btn btn-primary" do
+  New Transaction
+
 %table.table.table-bordered
   %thead
     %tr
@@ -10,8 +13,19 @@
       %th Transaction Type
       %th Amount
   %tbody
-    - @bank_account.account_transactions.each do |t|
+    - @bank_account.first.account_transactions.each do |t|
       %tr
         %th #{t.created_at}
         %th #{t.transaction_type}
         %th #{number_to_currency(t.amount)}
+    %tr
+      %th
+      %th Balance
+      %th #{number_to_currency(@bank_account.first.balance)}
+
+
+= javascript_include_tag "bank_accounts/show"
+:javascript
+  $(document).ready(function(){
+    Show.init();
+  });
