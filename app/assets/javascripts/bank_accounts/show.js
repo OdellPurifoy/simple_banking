@@ -5,9 +5,11 @@ var Show = (function() {
   var $inputAmount;
   var $selectTransactionType;
   var $parameters;
+  var $notification;
 
   //non jquery variable
   var bankAccountId;
+  var url = "/api/v1/bank_accounts/new_transaction";
 
   var fetchElements = function() {
     $btnNewTransaction = $("#btn-new-transaction");
@@ -16,7 +18,7 @@ var Show = (function() {
     $inputAmount = $("#input-amount");
     $selectTransactionType = $("#select-transaction-type");
     $parameters = $("#parameters");
-
+    $notification = $(".notification");
     bankAccountId = $parameters.data("bank-account-id");
   };
 
@@ -50,6 +52,25 @@ var Show = (function() {
           " Bank Account ID:" +
           bankAccountId
       );
+
+      $notification.html("");
+
+      $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "json",
+        data: {
+          amount: amount,
+          transaction_type: transactionType,
+          bank_account_id: bankAccountId
+        },
+        success: function(response) {
+          window.location.href = "/bank_accounts" + bankAccountId;
+        },
+        errors: function(response) {
+          $notification.html(JSON.parse(response.responseText).errors.join());
+        }
+      });
     });
   };
 
